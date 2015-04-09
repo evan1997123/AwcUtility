@@ -7,31 +7,33 @@ ASurface::ASurface()
 
 ASurface::~ASurface()
 {
+	texture = NULL;
 }
 
-void surfaceDrawPoint(Vector2D pos)
+//Geometric Primitives
+void ASurface::DrawPoint(Vector2D pos)
 {
 	SDL_RenderDrawPoint(gRenderer, (int)pos.x, (int)pos.y);
 }
 
-void surfaceDrawLine(Vector2D p1, Vector2D p2)
+void ASurface::DrawLine(Vector2D p1, Vector2D p2)
 {
 	SDL_RenderDrawLine(gRenderer, (int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
 }
 
-void surfaceDrawRect(Vector2D pos, int w, int h)
+void ASurface::DrawRect(Vector2D pos, int w, int h)
 {
 	SDL_Rect rect{ (int)pos.x, (int)pos.y, w, h };
 	SDL_RenderDrawRect(gRenderer, &rect);
 }
 
-void surfaceDrawFillRect(Vector2D pos, int w, int h)
+void ASurface::DrawFillRect(Vector2D pos, int w, int h)
 {
 	SDL_Rect rect{ (int)pos.x, (int)pos.y, w, h };
 	SDL_RenderFillRect(gRenderer, &rect);
 }
 
-void surfaceDrawQuad(Vector2D p1, Vector2D p2)
+void ASurface::DrawQuad(Vector2D p1, Vector2D p2)
 {
 	Vector2D pos;
 	
@@ -60,7 +62,7 @@ void surfaceDrawQuad(Vector2D p1, Vector2D p2)
 	SDL_RenderDrawRect(gRenderer, &rect);
 }
 
-void surfaceDrawFillQuad(Vector2D p1, Vector2D p2)
+void ASurface::DrawFillQuad(Vector2D p1, Vector2D p2)
 {
 	Vector2D pos;
 
@@ -87,4 +89,38 @@ void surfaceDrawFillQuad(Vector2D p1, Vector2D p2)
 
 	SDL_Rect rect{ (int)pos.x, (int)pos.y, (int)w, (int)h };
 	SDL_RenderFillRect(gRenderer, &rect);
+}
+
+//Texture stuff
+void ASurface::DrawTexturedRect(Vector2D pos, int _w, int _h, double angle)
+{
+	int w = _w;
+	int h = _h;
+
+	if ((w == NULL) || (h == NULL))
+	{
+		w = texture->getWidth();
+		h = texture->getHeight();
+	}
+
+	SDL_Rect renderQuad = { pos.x, pos.y, w, h };
+
+	//Render to screen
+	SDL_RenderCopyEx(gRenderer, texture->getTexture(), NULL, &renderQuad, angle, NULL, SDL_FLIP_NONE);
+}
+
+void ASurface::DrawTexturedQuad(Vector2D p1, Vector2D p2)
+{
+
+}
+
+//Setting stuff
+void ASurface::SetTexture(ATexture* _texture)
+{
+	/*
+	texture->free();
+	texture = new ATexture;
+	texture->load(path);
+	*/
+	texture = _texture;
 }
