@@ -11,9 +11,11 @@ class ATexture
 	public:
 	ATexture();
 	ATexture(std::string path, Color colorkey = Color(255, 0, 255));
+	ATexture(SDL_Surface *sourceSurface);
 	~ATexture();
 
 	bool load(std::string path, Color colorkey = Color(255, 0, 255));
+	bool createFromSurface(SDL_Surface *sourceSurface);
 	void free();
 	SDL_Texture* getTexture();
 

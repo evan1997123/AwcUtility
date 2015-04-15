@@ -49,3 +49,8 @@ void renderDrawFillQuad(Vector2D p1, Vector2D p2)
 {
 	surface.DrawFillQuad(Scr2Pos(p1), Scr2Pos(p2));
 }
+
+void renderDrawTexturedRect(Vector2D pos, float w, float h)
+{
+	surface.DrawTexturedRect(Pos2Scr(pos + Vector2D(-w / 2, h / 2)), (int)w*PPM, (int)h*PPM);
+}

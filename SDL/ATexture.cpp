@@ -18,6 +18,15 @@ ATexture::ATexture(std::string path, Color colorkey)
 	load(path, colorkey);
 }
 
+ATexture::ATexture(SDL_Surface *sourceSurface)
+{
+	mTexture = NULL;
+	width = 0;
+	height = 0;
+
+	createFromSurface(sourceSurface);
+}
+
 ATexture::~ATexture()
 {
 	free();
@@ -47,6 +56,25 @@ bool ATexture::load(std::string path, Color colorkey)
 
 		SDL_FreeSurface(loadedSurface);
 	}
+
+	mTexture = newTexture;
+	return mTexture != NULL;
+}
+
+//Creates texture from existing surface and frees the surface
+bool ATexture::createFromSurface(SDL_Surface *sourceSurface)
+{
+	free();
+
+	//Final texture
+	SDL_Texture* newTexture = NULL;
+
+	width = sourceSurface->w;
+	height = sourceSurface->h;
+
+	newTexture = SDL_CreateTextureFromSurface(gRenderer, sourceSurface);
+
+	SDL_FreeSurface(sourceSurface);
 
 	mTexture = newTexture;
 	return mTexture != NULL;
